@@ -2,178 +2,257 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ESCUDERO SELENE</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body{margin:0;background:#0a0a0a;color:#fff;font-family:'Poppins',sans-serif;}
-nav{position:fixed;width:100%;top:0;background:rgba(0,0,0,0.6);backdrop-filter:blur(10px);display:flex;justify-content:space-between;padding:15px 30px;z-index:1000;}
-nav a{color:white;text-decoration:none;margin:0 10px;}
+body{margin:0;background:#000;color:#fff;font-family:Arial}
 
-.hero{height:100vh;background:url('https://picsum.photos/1600/900') center/cover;display:flex;align-items:center;justify-content:center;text-align:center;}
-.hero h1{font-family:'Playfair Display';font-size:50px;}
+/* PORTADA */
+.portada{
+height:90vh;
+background:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee') center/cover;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+}
 
-.admin-btn{position:fixed;top:15px;left:15px;background:#111;padding:10px;cursor:pointer;}
+.portada h1{font-size:40px}
 
-.section{padding:60px 20px;text-align:center;}
+/* BOTONES */
+.btn{
+background:#00c853;
+padding:10px 18px;
+border:none;
+color:#fff;
+cursor:pointer;
+border-radius:6px;
+}
 
-.clientes{display:flex;gap:20px;padding:40px;overflow:auto;}
-.cliente{background:#111;padding:20px;border-radius:10px;cursor:pointer;}
+/* GALERIA */
+.galerias{padding:20px}
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
+gap:8px;
+}
+.grid img{
+width:100%;
+height:120px;
+object-fit:cover;
+border-radius:8px;
+}
 
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:15px;padding:20px;}
-.img-box{position:relative;}
-.img-box img{width:100%;border-radius:10px;}
-.img-box::after{content:"@FOTOS_SELE";position:absolute;bottom:10px;right:10px;color:rgba(255,255,255,0.5);}
-.descargar{position:absolute;top:10px;right:10px;background:black;padding:5px;cursor:pointer;}
+/* PANEL */
+.panel-btn{
+position:fixed;
+top:10px;
+left:10px;
+background:#111;
+padding:10px;
+cursor:pointer;
+border-radius:6px;
+}
 
-.panel{display:none;position:fixed;width:100%;height:100%;background:black;top:0;left:0;padding:50px;}
-input,select{padding:10px;margin:5px;}
-button{padding:10px;margin:5px;background:#25D366;border:none;color:white;border-radius:5px;}
+.panel{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:320px;
+height:100%;
+background:#111;
+padding:20px;
+overflow:auto;
+}
 
-.whatsapp{position:fixed;bottom:20px;right:20px;background:#25D366;padding:15px;border-radius:50%;}
+input,select{
+width:100%;
+margin:5px 0;
+padding:8px;
+}
+
+/* PROGRESO */
+.barra{
+height:8px;
+background:#333;
+border-radius:4px;
+overflow:hidden;
+}
+.progreso{
+height:100%;
+width:0%;
+background:#00c853;
+}
+
+/* WHATSAPP */
+.whatsapp{
+position:fixed;
+bottom:20px;
+right:20px;
+background:#25d366;
+padding:15px;
+border-radius:50%;
+cursor:pointer;
+}
 </style>
 </head>
 
 <body>
 
-<nav>
-<div>ESCUDERO SELENE</div>
-<div>
-<a href="#">Inicio</a>
-<a href="#galerias">Galerías</a>
-</div>
-</nav>
+<div class="panel-btn" onclick="abrirPanel()">⚙</div>
 
-<div class="admin-btn" onclick="abrirPanel()">⚙</div>
+<div class="panel" id="panel">
 
-<section class="hero">
-<div>
-<h1>ESCUDERO SELENE</h1>
-<p>@FOTOS_SELE · FOTOGRAFÍA PROFESIONAL</p>
-<button onclick="scrollTo('galerias')">Ver galerías</button>
-</div>
-</section>
-
-<!-- GALERIAS -->
-<section id="galerias" class="section">
-<h2>Galerías</h2>
-<div class="clientes" id="clientes"></div>
-<div id="galeria" class="grid"></div>
-</section>
-
-<!-- PANEL -->
-<div id="panel" class="panel">
-<h2>Panel fotógrafo</h2>
+<h3>Panel Fotógrafo</h3>
 
 <input type="password" id="pass" placeholder="Contraseña">
-<button onclick="login()">Ingresar</button>
+<button class="btn" onclick="login()">Ingresar</button>
 
-<div id="admin" style="display:none;">
-<input type="text" id="nombre" placeholder="Nombre cliente">
-<select id="tipo">
-<option value="publica">Pública</option>
-<option value="privada">Privada</option>
-</select>
-<input type="text" id="clave" placeholder="Contraseña (si es privada)">
-<br>
-<input type="file" id="fotos" multiple>
-<br>
-<button onclick="crearGaleria()">Crear galería</button>
-<button onclick="cerrarPanel()">Cerrar</button>
-</div>
+<div id="contenido" style="display:none">
+
+<hr>
+
+<h4>Crear Galería</h4>
+<input id="nombreGaleria">
+<button class="btn" onclick="crearGaleria()">Crear</button>
+
+<hr>
+
+<h4>Galerías</h4>
+<select id="selectGaleria"></select>
+
+<hr>
+
+<h4>Subir fotos</h4>
+<input type="file" id="files" multiple>
+<button class="btn" onclick="subir()">Subir</button>
+
+<div class="barra"><div class="progreso" id="progreso"></div></div>
+
 </div>
 
-<a class="whatsapp" href="https://wa.me/5492615573928">💬</a>
+</div>
+
+<div class="portada">
+<h1>ESCUDERO SELENE</h1>
+<button class="btn" onclick="ir()">Ver galerías</button>
+</div>
+
+<div class="galerias" id="galerias"></div>
+
+<div class="whatsapp" onclick="window.open('https://wa.me/5492615573928')">💬</div>
 
 <script>
 
-let data = JSON.parse(localStorage.getItem("galerias")) || {};
+// 🔥 CONFIG CLOUDINARY
+const CLOUD_NAME = "dnsol2tcf";
+const PRESET = "fotografia";
 
-function abrirPanel(){panel.style.display="block";}
-function cerrarPanel(){panel.style.display="none";}
-
+// PASSWORD PANEL
 function login(){
-if(pass.value==="Lepra1913"){
-admin.style.display="block";
-}
+if(document.getElementById("pass").value==="Lepra1913"){
+document.getElementById("contenido").style.display="block";
+cargarSelect();
+}else alert("Incorrecto");
 }
 
+// ABRIR PANEL
+function abrirPanel(){
+document.getElementById("panel").style.display="block";
+}
+
+// DATOS
+let galerias = JSON.parse(localStorage.getItem("galerias")) || {};
+
+// CREAR GALERIA
 function crearGaleria(){
-let n=nombre.value;
-let t=tipo.value;
-let c=clave.value;
-let files=fotos.files;
+let nombre = document.getElementById("nombreGaleria").value;
+if(!nombre)return;
 
-if(!n||files.length===0)return alert("Faltan datos");
+galerias[nombre]=[];
+guardar();
+cargarSelect();
+mostrar();
+}
 
-data[n]={tipo:t,clave:c,fotos:[]};
+// SELECT
+function cargarSelect(){
+let s=document.getElementById("selectGaleria");
+s.innerHTML="";
+for(let g in galerias){
+let o=document.createElement("option");
+o.value=g;
+o.innerText=g;
+s.appendChild(o);
+}
+}
+
+// SUBIR A CLOUDINARY
+async function subir(){
+let files=document.getElementById("files").files;
+let gal=document.getElementById("selectGaleria").value;
+let prog=document.getElementById("progreso");
+
+let total=files.length, subidas=0;
 
 for(let f of files){
-let r=new FileReader();
-r.onload=(e)=>{
-data[n].fotos.push(e.target.result);
+
+let formData=new FormData();
+formData.append("file",f);
+formData.append("upload_preset",PRESET);
+
+let res=await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,{
+method:"POST",
+body:formData
+});
+
+let data=await res.json();
+
+galerias[gal].push(data.secure_url);
+
+subidas++;
+prog.style.width=(subidas/total*100)+"%";
+
 guardar();
-cargarClientes();
-};
-r.readAsDataURL(f);
-}
+mostrar();
 }
 
+setTimeout(()=>prog.style.width="0%",1000);
+}
+
+// GUARDAR
 function guardar(){
-localStorage.setItem("galerias",JSON.stringify(data));
+localStorage.setItem("galerias",JSON.stringify(galerias));
 }
 
-function cargarClientes(){
-clientes.innerHTML="";
-Object.keys(data).forEach(n=>{
+// MOSTRAR
+function mostrar(){
+let cont=document.getElementById("galerias");
+cont.innerHTML="";
+
+for(let g in galerias){
+
 let div=document.createElement("div");
-div.className="cliente";
-div.innerText=n + (data[n].tipo==="privada"?" 🔒":"");
-div.onclick=()=>abrirGaleria(n);
-clientes.appendChild(div);
-});
+
+div.innerHTML=`
+<h3>${g}</h3>
+<div class="grid">
+${galerias[g].map(i=>`<img src="${i}">`).join("")}
+</div>
+`;
+
+cont.appendChild(div);
+}
 }
 
-function abrirGaleria(n){
-if(data[n].tipo==="privada"){
-let p=prompt("Contraseña");
-if(p!==data[n].clave)return alert("Incorrecta");
-}
-verGaleria(n);
+// SCROLL
+function ir(){
+window.scrollTo({top:600,behavior:"smooth"});
 }
 
-function verGaleria(n){
-galeria.innerHTML="";
-data[n].fotos.forEach(img=>{
-let box=document.createElement("div");
-box.className="img-box";
-
-let image=document.createElement("img");
-image.src=img;
-
-let d=document.createElement("div");
-d.className="descargar";
-d.innerText="⬇";
-d.onclick=()=>{
-let a=document.createElement("a");
-a.href=img;
-a.download="foto.jpg";
-a.click();
-};
-
-box.appendChild(d);
-box.appendChild(image);
-galeria.appendChild(box);
-});
-}
-
-function scrollTo(id){
-document.getElementById(id).scrollIntoView({behavior:"smooth"});
-}
-
-cargarClientes();
+mostrar();
 
 </script>
 
