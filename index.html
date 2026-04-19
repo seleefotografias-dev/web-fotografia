@@ -2,88 +2,112 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>ESCUDERO SELENE</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-body{margin:0;background:#000;color:#fff;font-family:Arial}
+<title>ESCUDERO SELENE</title>
 
-/* PORTADA */
-.portada{
-height:90vh;
-background:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee') center/cover;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Poppins&display=swap" rel="stylesheet">
+
+<style>
+body{margin:0;background:#000;color:#fff;font-family:Poppins}
+
+/* HEADER */
+header{
+position:fixed;
+top:0;width:100%;
+display:flex;justify-content:space-between;
+padding:20px;
+background:rgba(0,0,0,0.7);
+z-index:999;
 }
 
-.portada h1{font-size:40px}
+/* HERO */
+.hero{
+height:100vh;
+background:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee') center/cover;
+display:flex;flex-direction:column;
+justify-content:center;align-items:center;
+}
+
+h1{font-family:Playfair Display;font-size:50px}
 
 /* BOTONES */
 .btn{
-background:#00c853;
-padding:10px 18px;
+background:#25D366;
 border:none;
-color:#fff;
+padding:10px 20px;
+border-radius:30px;
+margin:5px;
 cursor:pointer;
-border-radius:6px;
-}
-
-/* GALERIA */
-.galerias{padding:20px}
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(140px,1fr));
-gap:8px;
-}
-.grid img{
-width:100%;
-height:120px;
-object-fit:cover;
-border-radius:8px;
 }
 
 /* PANEL */
-.panel-btn{
+.panel{
 position:fixed;
-top:10px;
+top:80px;
 left:10px;
 background:#111;
-padding:10px;
-cursor:pointer;
-border-radius:6px;
+padding:15px;
+border-radius:10px;
+z-index:999;
 }
 
-.panel{
-display:none;
-position:fixed;
-top:0;
-left:0;
-width:320px;
-height:100%;
+/* GRID CLIENTES */
+.grid{
+padding:100px 20px;
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+gap:15px;
+}
+
+.album{
 background:#111;
 padding:20px;
-overflow:auto;
+border-radius:10px;
+cursor:pointer;
 }
 
-input,select{
+/* FOTOS */
+.fotos{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+gap:10px;
+padding:20px;
+}
+
+.fotos img{
 width:100%;
-margin:5px 0;
-padding:8px;
+border-radius:8px;
+cursor:pointer;
 }
 
-/* PROGRESO */
-.barra{
-height:8px;
-background:#333;
-border-radius:4px;
-overflow:hidden;
-}
-.progreso{
+/* FULLSCREEN */
+.viewer{
+position:fixed;
+top:0;left:0;
+width:100%;
 height:100%;
+background:black;
+display:none;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+z-index:9999;
+}
+
+.viewer img{
+max-width:90%;
+max-height:80%;
+}
+
+/* PROGRESS */
+.progress{
+position:fixed;
+bottom:0;
+left:0;
+height:5px;
+background:#25D366;
 width:0%;
-background:#00c853;
 }
 
 /* WHATSAPP */
@@ -91,169 +115,177 @@ background:#00c853;
 position:fixed;
 bottom:20px;
 right:20px;
-background:#25d366;
-padding:15px;
+background:#25D366;
+width:60px;height:60px;
 border-radius:50%;
-cursor:pointer;
+display:flex;
+justify-content:center;
+align-items:center;
+font-size:25px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="panel-btn" onclick="abrirPanel()">⚙</div>
+<header>
+<div>ESCUDERO SELENE</div>
+</header>
 
-<div class="panel" id="panel">
-
-<h3>Panel Fotógrafo</h3>
-
-<input type="password" id="pass" placeholder="Contraseña">
-<button class="btn" onclick="login()">Ingresar</button>
-
-<div id="contenido" style="display:none">
-
-<hr>
-
-<h4>Crear Galería</h4>
-<input id="nombreGaleria">
-<button class="btn" onclick="crearGaleria()">Crear</button>
-
-<hr>
-
-<h4>Galerías</h4>
-<select id="selectGaleria"></select>
-
-<hr>
-
-<h4>Subir fotos</h4>
-<input type="file" id="files" multiple>
-<button class="btn" onclick="subir()">Subir</button>
-
-<div class="barra"><div class="progreso" id="progreso"></div></div>
-
-</div>
-
-</div>
-
-<div class="portada">
+<section class="hero">
 <h1>ESCUDERO SELENE</h1>
-<button class="btn" onclick="ir()">Ver galerías</button>
+<button class="btn" onclick="verGalerias()">Ver galerías</button>
+</section>
+
+<!-- PANEL -->
+<div class="panel">
+<input type="password" id="pass">
+<button onclick="login()">Entrar</button>
+
+<div id="pro" style="display:none">
+<button onclick="crear()">Crear álbum</button>
+<input type="file" id="files" multiple>
+<button onclick="subir()">Subir</button>
+</div>
 </div>
 
-<div class="galerias" id="galerias"></div>
+<!-- GALERIAS -->
+<div id="galerias" class="grid"></div>
 
-<div class="whatsapp" onclick="window.open('https://wa.me/5492615573928')">💬</div>
+<!-- FOTOS -->
+<div id="fotos" class="fotos" style="display:none"></div>
+
+<!-- VIEWER -->
+<div id="viewer" class="viewer">
+<img id="imgView">
+<div>
+<button class="btn" onclick="descargar()">⬇ Descargar</button>
+<button class="btn" onclick="fav()">❤️ Favorito</button>
+<button class="btn" onclick="cerrar()">Cerrar</button>
+</div>
+</div>
+
+<div class="progress" id="progress"></div>
+
+<div class="whatsapp" onclick="wa()">💬</div>
 
 <script>
+const CLOUD = "dnsol2tcf"
+const PRESET = "fotografia"
 
-// 🔥 CONFIG CLOUDINARY
-const CLOUD_NAME = "dnsol2tcf";
-const PRESET = "fotografia";
+let data = JSON.parse(localStorage.getItem("data")) || {}
+let actualAlbum = null
+let actualImg = null
 
-// PASSWORD PANEL
 function login(){
-if(document.getElementById("pass").value==="Lepra1913"){
-document.getElementById("contenido").style.display="block";
-cargarSelect();
-}else alert("Incorrecto");
-}
-
-// ABRIR PANEL
-function abrirPanel(){
-document.getElementById("panel").style.display="block";
-}
-
-// DATOS
-let galerias = JSON.parse(localStorage.getItem("galerias")) || {};
-
-// CREAR GALERIA
-function crearGaleria(){
-let nombre = document.getElementById("nombreGaleria").value;
-if(!nombre)return;
-
-galerias[nombre]=[];
-guardar();
-cargarSelect();
-mostrar();
-}
-
-// SELECT
-function cargarSelect(){
-let s=document.getElementById("selectGaleria");
-s.innerHTML="";
-for(let g in galerias){
-let o=document.createElement("option");
-o.value=g;
-o.innerText=g;
-s.appendChild(o);
+if(pass.value==="Lepra1913"){
+pro.style.display="block"
 }
 }
 
-// SUBIR A CLOUDINARY
-async function subir(){
-let files=document.getElementById("files").files;
-let gal=document.getElementById("selectGaleria").value;
-let prog=document.getElementById("progreso");
-
-let total=files.length, subidas=0;
-
-for(let f of files){
-
-let formData=new FormData();
-formData.append("file",f);
-formData.append("upload_preset",PRESET);
-
-let res=await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,{
-method:"POST",
-body:formData
-});
-
-let data=await res.json();
-
-galerias[gal].push(data.secure_url);
-
-subidas++;
-prog.style.width=(subidas/total*100)+"%";
-
-guardar();
-mostrar();
+function crear(){
+let nombre = prompt("Nombre cliente")
+if(!nombre) return
+data[nombre]=[]
+guardar()
+renderAlbums()
 }
 
-setTimeout(()=>prog.style.width="0%",1000);
+function subir(){
+let files = document.getElementById("files").files
+let album = prompt("Álbum destino")
+if(!data[album]) return alert("No existe")
+
+let progress = document.getElementById("progress")
+
+Array.from(files).forEach((file,i)=>{
+let form=new FormData()
+form.append("file",file)
+form.append("upload_preset",PRESET)
+
+fetch(`https://api.cloudinary.com/v1_1/${CLOUD}/image/upload`,{
+method:"POST",body:form
+})
+.then(r=>r.json())
+.then(res=>{
+data[album].push(res.secure_url)
+guardar()
+progress.style.width=((i+1)/files.length)*100+"%"
+renderAlbums()
+})
+})
 }
 
-// GUARDAR
 function guardar(){
-localStorage.setItem("galerias",JSON.stringify(galerias));
+localStorage.setItem("data",JSON.stringify(data))
 }
 
-// MOSTRAR
-function mostrar(){
-let cont=document.getElementById("galerias");
-cont.innerHTML="";
+function renderAlbums(){
+let g=document.getElementById("galerias")
+g.innerHTML=""
 
-for(let g in galerias){
-
-let div=document.createElement("div");
-
-div.innerHTML=`
-<h3>${g}</h3>
-<div class="grid">
-${galerias[g].map(i=>`<img src="${i}">`).join("")}
-</div>
-`;
-
-cont.appendChild(div);
+for(let a in data){
+let div=document.createElement("div")
+div.className="album"
+div.innerHTML=`${a} (${data[a].length})`
+div.onclick=()=>abrirAlbum(a)
+g.appendChild(div)
 }
 }
 
-// SCROLL
-function ir(){
-window.scrollTo({top:600,behavior:"smooth"});
+function abrirAlbum(a){
+actualAlbum=a
+galerias.style.display="none"
+fotos.style.display="grid"
+renderFotos()
 }
 
-mostrar();
+function renderFotos(){
+fotos.innerHTML=""
+data[actualAlbum].forEach(url=>{
+let img=document.createElement("img")
+img.src=url.replace('/upload/','/upload/l_text:Arial_30:FOTOS_SELE,g_south_west,x_10,y_10/')
+img.onclick=()=>ver(url)
+fotos.appendChild(img)
+})
+}
 
+function ver(url){
+actualImg=url
+viewer.style.display="flex"
+imgView.src=url
+}
+
+function cerrar(){
+viewer.style.display="none"
+}
+
+function descargar(){
+window.open(actualImg)
+
+let descargas = JSON.parse(localStorage.getItem("descargas")) || []
+descargas.push(actualImg)
+localStorage.setItem("descargas",JSON.stringify(descargas))
+
+alert("Descarga registrada ✔")
+}
+
+function fav(){
+let favs = JSON.parse(localStorage.getItem("favs")) || []
+favs.push(actualImg)
+localStorage.setItem("favs",JSON.stringify(favs))
+alert("Agregado a favoritos ❤️")
+}
+
+function verGalerias(){
+document.getElementById("galerias").scrollIntoView()
+}
+
+function wa(){
+window.open("https://wa.me/5492615573928")
+}
+
+renderAlbums()
 </script>
 
 </body>
