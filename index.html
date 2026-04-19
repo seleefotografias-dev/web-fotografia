@@ -3,299 +3,282 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>ESCUDERO SELENE</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Poppins&display=swap" rel="stylesheet">
-
 <style>
-body{margin:0;background:#000;color:#fff;font-family:Poppins}
-
-header{
-position:fixed;top:0;width:100%;
-display:flex;justify-content:space-between;
-padding:20px;background:rgba(0,0,0,0.7);
-z-index:999;
+body{
+margin:0;
+font-family: 'Segoe UI', sans-serif;
+background:#000;
+color:#fff;
 }
 
+/* NAV */
+nav{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+display:flex;
+justify-content:space-between;
+padding:15px 30px;
+background:rgba(0,0,0,0.5);
+z-index:1000;
+}
+
+/* PANEL */
+#panelLogin{
+position:absolute;
+top:10px;
+left:10px;
+z-index:2000;
+}
+
+#panel{
+display:none;
+margin-top:10px;
+}
+
+button{
+padding:10px 15px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+background:#00c853;
+color:#fff;
+margin:5px;
+}
+
+/* PORTADA */
 .hero{
 height:100vh;
 background:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee') center/cover;
-display:flex;flex-direction:column;
-justify-content:center;align-items:center;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
 }
 
-h1{font-family:Playfair Display;font-size:50px}
-
-.btn{
-background:#25D366;border:none;
-padding:10px 20px;border-radius:30px;
-margin:5px;cursor:pointer;color:#fff;
+.hero h1{
+font-size:50px;
+letter-spacing:3px;
 }
 
-.panel{
-position:fixed;top:80px;left:10px;
-background:#111;padding:15px;border-radius:10px;
-z-index:999;
+.hero button{
+background:#00c853;
 }
 
-.grid{
-padding:100px 20px;
+/* GALERIAS */
+#galerias{
+padding:40px;
 display:grid;
-grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
-gap:15px;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
 }
 
-.album{
+.carpeta{
 background:#111;
 padding:20px;
 border-radius:10px;
 cursor:pointer;
+transition:0.3s;
 }
 
-.fotos{
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
-gap:10px;padding:20px;
+.carpeta:hover{
+transform:scale(1.05);
 }
 
-.fotos img{
-width:100%;
-border-radius:8px;
-cursor:pointer;
-}
-
-.viewer{
-position:fixed;top:0;left:0;
-width:100%;height:100%;
-background:black;
+/* FOTOS */
+#fotos{
 display:none;
+padding:20px;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:10px;
+}
+
+.foto{
+position:relative;
+}
+
+.foto img{
+width:100%;
+border-radius:10px;
+}
+
+/* MARCA AGUA */
+.marca{
+position:absolute;
+bottom:5px;
+left:10px;
+font-size:12px;
+opacity:0.7;
+}
+
+/* FULLSCREEN */
+#fullscreen{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:#000;
 justify-content:center;
 align-items:center;
-flex-direction:column;
-z-index:9999;
+z-index:3000;
 }
 
-.viewer img{
+#fullscreen img{
 max-width:90%;
-max-height:80%;
+max-height:90%;
 }
 
-.progress{
-position:fixed;
-bottom:0;left:0;
-height:5px;
-background:#25D366;
-width:0%;
-}
-
+/* WHATSAPP */
 .whatsapp{
 position:fixed;
-bottom:20px;right:20px;
+bottom:20px;
+right:20px;
 background:#25D366;
-width:60px;height:60px;
+padding:15px;
 border-radius:50%;
-display:flex;justify-content:center;
-align-items:center;font-size:25px;
+font-size:20px;
 }
 </style>
 </head>
 
 <body>
 
-<header>
-<div>ESCUDERO SELENE</div>
-</header>
-
-<section class="hero">
-<h1>ESCUDERO SELENE</h1>
-<button class="btn" onclick="verGalerias()">Ver galerías</button>
-</section>
-
 <!-- PANEL -->
-<div class="panel">
-<input type="password" id="pass">
+<div id="panelLogin">
+<input type="password" id="pass" placeholder="Contraseña">
 <button onclick="login()">Entrar</button>
 
-<div id="pro" style="display:none">
-<button onclick="crear()">Crear álbum</button>
-<input type="file" id="files" multiple>
-<button onclick="subir()">Subir</button>
+<div id="panel">
+<button onclick="crearGaleria()">Crear galería</button>
+<input type="file" id="upload" multiple onchange="subirFotos(event)">
+<div id="barra"></div>
 </div>
+</div>
+
+<!-- NAV -->
+<nav>
+<div>ESCUDERO SELENE</div>
+<div>Inicio</div>
+</nav>
+
+<!-- PORTADA -->
+<div class="hero">
+<h1>ESCUDERO SELENE</h1>
+<p>@FOTOS_SELE - FOTOGRAFÍA PROFESIONAL</p>
+<button onclick="scrollGalerias()">Ver galerías</button>
 </div>
 
 <!-- GALERIAS -->
-<div id="galerias" class="grid"></div>
+<div id="galerias"></div>
 
 <!-- FOTOS -->
-<div id="fotos" class="fotos" style="display:none"></div>
+<div id="fotos"></div>
 
-<!-- VIEWER -->
-<div id="viewer" class="viewer">
-<img id="imgView">
-<div>
-<button class="btn" onclick="descargar()">⬇ Descargar</button>
-<button class="btn" onclick="fav()">❤️ Favorito</button>
-<button class="btn" onclick="cerrar()">Cerrar</button>
-</div>
+<!-- FULLSCREEN -->
+<div id="fullscreen" onclick="cerrarFull()">
+<img id="imgFull">
 </div>
 
-<div class="progress" id="progress"></div>
-
-<div class="whatsapp" onclick="wa()">💬</div>
+<!-- WHATSAPP -->
+<a class="whatsapp" href="https://wa.me/5492615573928" target="_blank">💬</a>
 
 <script>
-const CLOUD = "dnsol2tcf"
-const PRESET = "fotografia"
+let galeriasData = JSON.parse(localStorage.getItem("galerias")) || {}
+let actual = null
 
-let data = JSON.parse(localStorage.getItem("data")) || {}
-let actualAlbum = null
-let actualImg = null
-
-// LOGIN
 function login(){
-if(pass.value==="Lepra1913"){
-pro.style.display="block"
+if(document.getElementById("pass").value==="Lepra1913"){
+document.getElementById("panel").style.display="block"
 }
 }
 
-// CREAR ALBUM
-function crear(){
+function crearGaleria(){
 let nombre = prompt("Nombre cliente")
 if(!nombre) return
-data[nombre]=[]
+galeriasData[nombre]=[]
 guardar()
-renderAlbums()
+renderGalerias()
 }
 
-// SUBIR
-function subir(){
-let files = document.getElementById("files").files
-let album = prompt("Álbum destino")
-if(!data[album]) return alert("No existe")
+function subirFotos(e){
+let archivos = e.target.files
+let barra = document.getElementById("barra")
+barra.innerHTML="Subiendo..."
 
-let progress = document.getElementById("progress")
-
-Array.from(files).forEach((file,i)=>{
-let form=new FormData()
-form.append("file",file)
-form.append("upload_preset",PRESET)
-
-fetch(`https://api.cloudinary.com/v1_1/${CLOUD}/image/upload`,{
-method:"POST",body:form
-})
-.then(r=>r.json())
-.then(res=>{
-data[album].push(res.secure_url)
+let i=0
+for(let file of archivos){
+let reader = new FileReader()
+reader.onload=function(ev){
+galeriasData[actual].push(ev.target.result)
 guardar()
-progress.style.width=((i+1)/files.length)*100+"%"
-renderAlbums()
-})
-})
+renderFotos(actual)
+i++
+barra.innerHTML="Subidas: "+i+"/"+archivos.length
+}
+reader.readAsDataURL(file)
+}
 }
 
-// GUARDAR
 function guardar(){
-localStorage.setItem("data",JSON.stringify(data))
+localStorage.setItem("galerias", JSON.stringify(galeriasData))
 }
 
-// RENDER ALBUMS
-function renderAlbums(){
-let g=document.getElementById("galerias")
-g.innerHTML=""
+function renderGalerias(){
+let cont = document.getElementById("galerias")
+cont.innerHTML=""
+for(let g in galeriasData){
+let div = document.createElement("div")
+div.className="carpeta"
+div.innerHTML=`📁 ${g}`
+div.onclick=()=>abrirGaleria(g)
+cont.appendChild(div)
+}
+}
 
-for(let a in data){
-let div=document.createElement("div")
-div.className="album"
+function abrirGaleria(nombre){
+actual = nombre
+document.getElementById("fotos").style.display="grid"
+renderFotos(nombre)
+}
 
-let link = location.origin + location.pathname + "?album=" + encodeURIComponent(a)
-
+function renderFotos(nombre){
+let cont = document.getElementById("fotos")
+cont.innerHTML=""
+galeriasData[nombre].forEach(f=>{
+let div = document.createElement("div")
+div.className="foto"
 div.innerHTML=`
-<strong>${a}</strong><br>
-${data[a].length} fotos<br>
-<button class="btn" onclick="copiarLink(event,'${link}')">📤 Compartir</button>
+<img src="${f}" onclick="full('${f}')">
+<div class="marca">FOTOS_SELE</div>
+<a href="${f}" download>⬇</a>
 `
-
-div.onclick=()=>abrirAlbum(a)
-g.appendChild(div)
-}
-}
-
-// COPIAR LINK
-function copiarLink(e,link){
-e.stopPropagation()
-navigator.clipboard.writeText(link)
-alert("Link copiado ✔")
-}
-
-// ABRIR ALBUM
-function abrirAlbum(a){
-actualAlbum=a
-galerias.style.display="none"
-fotos.style.display="grid"
-renderFotos()
-}
-
-// RENDER FOTOS
-function renderFotos(){
-fotos.innerHTML=""
-data[actualAlbum].forEach(url=>{
-let img=document.createElement("img")
-img.src=url.replace('/upload/','/upload/l_text:Arial_30:FOTOS_SELE,g_south_west,x_10,y_10/')
-img.onclick=()=>ver(url)
-fotos.appendChild(img)
+cont.appendChild(div)
 })
 }
 
-// VIEWER
-function ver(url){
-actualImg=url
-viewer.style.display="flex"
-imgView.src=url
+function full(src){
+document.getElementById("fullscreen").style.display="flex"
+document.getElementById("imgFull").src=src
 }
 
-function cerrar(){
-viewer.style.display="none"
+function cerrarFull(){
+document.getElementById("fullscreen").style.display="none"
 }
 
-// DESCARGA
-function descargar(){
-window.open(actualImg)
-
-let descargas = JSON.parse(localStorage.getItem("descargas")) || []
-descargas.push(actualImg)
-localStorage.setItem("descargas",JSON.stringify(descargas))
-
-alert("Descarga registrada ✔")
+function scrollGalerias(){
+window.scrollTo({
+top: window.innerHeight,
+behavior:"smooth"
+})
 }
 
-// FAVORITOS
-function fav(){
-let favs = JSON.parse(localStorage.getItem("favs")) || []
-favs.push(actualImg)
-localStorage.setItem("favs",JSON.stringify(favs))
-alert("Favorito ❤️")
-}
-
-// SCROLL
-function verGalerias(){
-document.getElementById("galerias").scrollIntoView()
-}
-
-// WHATSAPP
-function wa(){
-window.open("https://wa.me/5492615573928")
-}
-
-// AUTO ABRIR LINK
-const params = new URLSearchParams(window.location.search)
-const albumURL = params.get("album")
-
-if(albumURL && data[albumURL]){
-abrirAlbum(albumURL)
-}
-
-renderAlbums()
+renderGalerias()
 </script>
 
 </body>
