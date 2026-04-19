@@ -3,282 +3,220 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ESCUDERO SELENE</title>
+<title>Panel PRO - ESCUDERO SELENE</title>
 
 <style>
-body{
-margin:0;
-font-family: 'Segoe UI', sans-serif;
-background:#000;
-color:#fff;
-}
-
-/* NAV */
-nav{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-display:flex;
-justify-content:space-between;
-padding:15px 30px;
-background:rgba(0,0,0,0.5);
-z-index:1000;
-}
+body{margin:0;background:#0a0a0a;color:#fff;font-family:sans-serif}
 
 /* PANEL */
-#panelLogin{
-position:absolute;
-top:10px;
-left:10px;
-z-index:2000;
-}
+#login{position:absolute;top:10px;left:10px;z-index:1000}
+#panel{display:none;padding:20px}
 
-#panel{
-display:none;
-margin-top:10px;
-}
-
-button{
-padding:10px 15px;
-border:none;
-border-radius:8px;
-cursor:pointer;
-background:#00c853;
-color:#fff;
-margin:5px;
-}
-
-/* PORTADA */
-.hero{
-height:100vh;
-background:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee') center/cover;
+/* HEADER */
+.header{
 display:flex;
-flex-direction:column;
-justify-content:center;
+justify-content:space-between;
 align-items:center;
-text-align:center;
+margin-bottom:20px;
 }
 
-.hero h1{
-font-size:50px;
-letter-spacing:3px;
-}
-
-.hero button{
+.btn{
 background:#00c853;
+border:none;
+padding:10px 15px;
+border-radius:8px;
+color:#fff;
+cursor:pointer;
 }
 
-/* GALERIAS */
-#galerias{
-padding:40px;
+/* GRID */
+.grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
 gap:20px;
 }
 
-.carpeta{
+/* CARD */
+.card{
 background:#111;
-padding:20px;
 border-radius:10px;
-cursor:pointer;
-transition:0.3s;
-}
-
-.carpeta:hover{
-transform:scale(1.05);
-}
-
-/* FOTOS */
-#fotos{
-display:none;
-padding:20px;
-grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-gap:10px;
-}
-
-.foto{
+overflow:hidden;
 position:relative;
 }
 
-.foto img{
+.card img{
 width:100%;
-border-radius:10px;
+height:150px;
+object-fit:cover;
 }
 
-/* MARCA AGUA */
-.marca{
+.card-body{
+padding:10px;
+}
+
+.menu{
 position:absolute;
-bottom:5px;
-left:10px;
-font-size:12px;
-opacity:0.7;
+top:10px;
+right:10px;
+cursor:pointer;
 }
 
-/* FULLSCREEN */
-#fullscreen{
+.dropdown{
 display:none;
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:#000;
-justify-content:center;
-align-items:center;
-z-index:3000;
+position:absolute;
+right:10px;
+top:40px;
+background:#222;
+border-radius:8px;
+overflow:hidden;
 }
 
-#fullscreen img{
-max-width:90%;
-max-height:90%;
+.dropdown div{
+padding:10px;
+cursor:pointer;
 }
 
-/* WHATSAPP */
-.whatsapp{
-position:fixed;
-bottom:20px;
-right:20px;
-background:#25D366;
-padding:15px;
-border-radius:50%;
-font-size:20px;
+.dropdown div:hover{
+background:#333;
 }
 </style>
 </head>
 
 <body>
 
-<!-- PANEL -->
-<div id="panelLogin">
-<input type="password" id="pass" placeholder="Contraseña">
+<div id="login">
+<input type="password" id="pass">
 <button onclick="login()">Entrar</button>
+</div>
 
 <div id="panel">
-<button onclick="crearGaleria()">Crear galería</button>
-<input type="file" id="upload" multiple onchange="subirFotos(event)">
-<div id="barra"></div>
-</div>
-</div>
 
-<!-- NAV -->
-<nav>
-<div>ESCUDERO SELENE</div>
-<div>Inicio</div>
-</nav>
-
-<!-- PORTADA -->
-<div class="hero">
-<h1>ESCUDERO SELENE</h1>
-<p>@FOTOS_SELE - FOTOGRAFÍA PROFESIONAL</p>
-<button onclick="scrollGalerias()">Ver galerías</button>
+<div class="header">
+<h2>Colecciones</h2>
+<button class="btn" onclick="crear()">+ Nueva colección</button>
 </div>
 
-<!-- GALERIAS -->
-<div id="galerias"></div>
+<div class="grid" id="grid"></div>
 
-<!-- FOTOS -->
-<div id="fotos"></div>
-
-<!-- FULLSCREEN -->
-<div id="fullscreen" onclick="cerrarFull()">
-<img id="imgFull">
 </div>
-
-<!-- WHATSAPP -->
-<a class="whatsapp" href="https://wa.me/5492615573928" target="_blank">💬</a>
 
 <script>
-let galeriasData = JSON.parse(localStorage.getItem("galerias")) || {}
-let actual = null
+let db = JSON.parse(localStorage.getItem("proDB")) || {}
 
 function login(){
-if(document.getElementById("pass").value==="Lepra1913"){
-document.getElementById("panel").style.display="block"
+if(pass.value==="Lepra1913"){
+panel.style.display="block"
+render()
 }
 }
 
-function crearGaleria(){
-let nombre = prompt("Nombre cliente")
+function crear(){
+let nombre = prompt("Nombre colección")
 if(!nombre) return
-galeriasData[nombre]=[]
-guardar()
-renderGalerias()
+
+let id = Date.now()
+db[id]={
+nombre:nombre,
+fotos:[],
+fecha:new Date().toLocaleDateString()
 }
 
-function subirFotos(e){
-let archivos = e.target.files
-let barra = document.getElementById("barra")
-barra.innerHTML="Subiendo..."
-
-let i=0
-for(let file of archivos){
-let reader = new FileReader()
-reader.onload=function(ev){
-galeriasData[actual].push(ev.target.result)
 guardar()
-renderFotos(actual)
-i++
-barra.innerHTML="Subidas: "+i+"/"+archivos.length
-}
-reader.readAsDataURL(file)
-}
+render()
 }
 
 function guardar(){
-localStorage.setItem("galerias", JSON.stringify(galeriasData))
+localStorage.setItem("proDB", JSON.stringify(db))
 }
 
-function renderGalerias(){
-let cont = document.getElementById("galerias")
-cont.innerHTML=""
-for(let g in galeriasData){
-let div = document.createElement("div")
-div.className="carpeta"
-div.innerHTML=`📁 ${g}`
-div.onclick=()=>abrirGaleria(g)
-cont.appendChild(div)
-}
-}
+function render(){
+grid.innerHTML=""
 
-function abrirGaleria(nombre){
-actual = nombre
-document.getElementById("fotos").style.display="grid"
-renderFotos(nombre)
-}
+for(let id in db){
+let g = db[id]
 
-function renderFotos(nombre){
-let cont = document.getElementById("fotos")
-cont.innerHTML=""
-galeriasData[nombre].forEach(f=>{
-let div = document.createElement("div")
-div.className="foto"
-div.innerHTML=`
-<img src="${f}" onclick="full('${f}')">
-<div class="marca">FOTOS_SELE</div>
-<a href="${f}" download>⬇</a>
+let preview = g.fotos[0] || "https://via.placeholder.com/300x200"
+
+let card = document.createElement("div")
+card.className="card"
+
+card.innerHTML=`
+<div class="menu" onclick="toggleMenu('${id}')">⋮</div>
+
+<div id="menu_${id}" class="dropdown">
+<div onclick="abrir('${id}')">👁 Vista previa</div>
+<div onclick="editar('${id}')">✏ Editar</div>
+<div onclick="duplicar('${id}')">📄 Duplicar</div>
+<div onclick="eliminar('${id}')">🗑 Eliminar</div>
+<div onclick="compartir('${id}')">🔗 Compartir</div>
+</div>
+
+<img src="${preview}">
+<div class="card-body">
+<h3>${g.nombre}</h3>
+<p>${g.fotos.length} fotos</p>
+<p>${g.fecha}</p>
+<input type="file" multiple onchange="subir(event,'${id}')">
+</div>
 `
-cont.appendChild(div)
-})
+
+grid.appendChild(card)
+}
 }
 
-function full(src){
-document.getElementById("fullscreen").style.display="flex"
-document.getElementById("imgFull").src=src
+function toggleMenu(id){
+let m = document.getElementById("menu_"+id)
+m.style.display = m.style.display==="block"?"none":"block"
 }
 
-function cerrarFull(){
-document.getElementById("fullscreen").style.display="none"
+function subir(e,id){
+let files = e.target.files
+for(let f of files){
+let r = new FileReader()
+r.onload=ev=>{
+db[id].fotos.push(ev.target.result)
+guardar()
+render()
+}
+r.readAsDataURL(f)
+}
 }
 
-function scrollGalerias(){
-window.scrollTo({
-top: window.innerHeight,
-behavior:"smooth"
-})
+function abrir(id){
+alert("Abrir galería cliente (modo público después)")
 }
 
-renderGalerias()
+function editar(id){
+let nuevo = prompt("Nuevo nombre", db[id].nombre)
+if(nuevo){
+db[id].nombre = nuevo
+guardar()
+render()
+}
+}
+
+function duplicar(id){
+let copia = JSON.parse(JSON.stringify(db[id]))
+let newId = Date.now()
+db[newId] = copia
+guardar()
+render()
+}
+
+function eliminar(id){
+if(confirm("Eliminar galería?")){
+delete db[id]
+guardar()
+render()
+}
+}
+
+function compartir(id){
+let link = location.href + "?galeria=" + id
+navigator.clipboard.writeText(link)
+alert("Link copiado")
+}
+
 </script>
 
 </body>
