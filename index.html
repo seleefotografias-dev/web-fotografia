@@ -1,105 +1,161 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Fotografía</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ESCUDERO SELENE</title>
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            background: #111;
-            color: white;
-        }
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: #000;
+  color: #fff;
+}
 
-        header {
-            text-align: center;
-            padding: 20px;
-            background: #000;
-        }
+/* NAV */
+nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: rgba(0,0,0,0.8);
+  text-align: center;
+  padding: 15px;
+  z-index: 1000;
+}
 
-        nav {
-            text-align: center;
-            margin: 10px 0;
-        }
+nav a {
+  color: white;
+  margin: 0 15px;
+  text-decoration: none;
+  font-weight: bold;
+}
 
-        nav a {
-            color: white;
-            margin: 0 15px;
-            text-decoration: none;
-            font-weight: bold;
-        }
+/* PORTADA */
+.hero {
+  height: 100vh;
+  background: url('https://picsum.photos/1200/800') center/cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
-        nav a:hover {
-            color: #ff9900;
-        }
+.hero h1 {
+  font-size: 40px;
+}
 
-        h2 {
-            text-align: center;
-        }
+.hero p {
+  font-size: 18px;
+  letter-spacing: 3px;
+}
 
-        section {
-            margin-top: 20px;
-        }
+.btn {
+  margin: 10px;
+  padding: 12px 25px;
+  border: none;
+  cursor: pointer;
+  background: white;
+  color: black;
+  font-weight: bold;
+  border-radius: 5px;
+}
 
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            padding: 20px;
-        }
+/* GALERÍA */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+  gap: 10px;
+  padding: 20px;
+}
 
-        .gallery img {
-            width: 100%;
-            border-radius: 10px;
-            transition: transform 0.3s;
-        }
+.gallery img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+}
 
-        .gallery img:hover {
-            transform: scale(1.05);
-        }
+/* SERVICIOS */
+.section {
+  padding: 50px 20px;
+  text-align: center;
+}
 
-        footer {
-            text-align: center;
-            padding: 10px;
-            background: #000;
-        }
+.services div {
+  margin: 10px;
+}
 
-        @media (max-width: 768px) {
-            .gallery {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+/* CONTACTO */
+#contacto {
+  text-align: center;
+  padding: 40px;
+}
+
+/* WHATSAPP */
+.whatsapp {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #25D366;
+  padding: 15px;
+  border-radius: 50%;
+  font-size: 25px;
+  color: white;
+  text-decoration: none;
+}
+</style>
 </head>
 
 <body>
 
-<header id="inicio">
-    <h1>Mi sitio de fotografía 📷</h1>
-    <p>Bienvenido a mi web.</p>
-</header>
-
 <nav>
-    <a href="#inicio">Inicio</a>
-    <a href="#galeria">Galería</a>
-    <a href="#contacto">Contacto</a>
+<a href="#inicio">Inicio</a>
+<a href="#galeria">Galería</a>
+<a href="#servicios">Servicios</a>
+<a href="#contacto">Contacto</a>
 </nav>
 
-<section>
-    <h2>Capturando momentos únicos</h2>
+<!-- INICIO -->
+<section id="inicio" class="hero">
+<h1>ESCUDERO SELENE</h1>
+<p>@FOTOS_SELE</p>
+<p>PROFESIONAL</p>
+
+<a href="https://wa.me/542615573928" target="_blank" class="btn">WhatsApp</a>
+<a href="#galeria" class="btn">Ver galería</a>
 </section>
 
+<!-- GALERÍA -->
 <section id="galeria" class="gallery">
-    <img src="https://picsum.photos/400/300?1">
-    <img src="https://picsum.photos/400/300?2">
-    <img src="https://picsum.photos/400/300?3">
-    <img src="https://picsum.photos/400/300?4">
+<img src="imagenes/foto1.jpg">
+<img src="imagenes/foto2.jpg">
+<img src="imagenes/foto3.jpg">
+<img src="imagenes/foto4.jpg">
 </section>
 
-<footer id="contacto">
-    <p>© 2026 Mi Fotografía</p>
-</footer>
+<!-- SERVICIOS -->
+<section id="servicios" class="section services">
+<h2>Servicios</h2>
+<div>15 años</div>
+<div>Bodas</div>
+<div>Sesiones</div>
+<div>Eventos</div>
+<div>Books</div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+<h2>Contacto</h2>
+
+<p>📞 <a href="tel:2615573928">+54 9 2615573928</a></p>
+<p>📧 seleefotorafias@gmail.com</p>
+<p>📷 Instagram: @FOTOS_SELE</p>
+
+<a href="https://wa.me/542615573928" class="btn">Escribime</a>
+</section>
+
+<!-- WHATSAPP -->
+<a href="https://wa.me/542615573928" class="whatsapp">💬</a>
 
 </body>
 </html>
