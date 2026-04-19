@@ -11,17 +11,13 @@
 <style>
 body{margin:0;background:#000;color:#fff;font-family:Poppins}
 
-/* HEADER */
 header{
-position:fixed;
-top:0;width:100%;
+position:fixed;top:0;width:100%;
 display:flex;justify-content:space-between;
-padding:20px;
-background:rgba(0,0,0,0.7);
+padding:20px;background:rgba(0,0,0,0.7);
 z-index:999;
 }
 
-/* HERO */
 .hero{
 height:100vh;
 background:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee') center/cover;
@@ -31,28 +27,18 @@ justify-content:center;align-items:center;
 
 h1{font-family:Playfair Display;font-size:50px}
 
-/* BOTONES */
 .btn{
-background:#25D366;
-border:none;
-padding:10px 20px;
-border-radius:30px;
-margin:5px;
-cursor:pointer;
+background:#25D366;border:none;
+padding:10px 20px;border-radius:30px;
+margin:5px;cursor:pointer;color:#fff;
 }
 
-/* PANEL */
 .panel{
-position:fixed;
-top:80px;
-left:10px;
-background:#111;
-padding:15px;
-border-radius:10px;
+position:fixed;top:80px;left:10px;
+background:#111;padding:15px;border-radius:10px;
 z-index:999;
 }
 
-/* GRID CLIENTES */
 .grid{
 padding:100px 20px;
 display:grid;
@@ -67,12 +53,10 @@ border-radius:10px;
 cursor:pointer;
 }
 
-/* FOTOS */
 .fotos{
 display:grid;
 grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
-gap:10px;
-padding:20px;
+gap:10px;padding:20px;
 }
 
 .fotos img{
@@ -81,12 +65,9 @@ border-radius:8px;
 cursor:pointer;
 }
 
-/* FULLSCREEN */
 .viewer{
-position:fixed;
-top:0;left:0;
-width:100%;
-height:100%;
+position:fixed;top:0;left:0;
+width:100%;height:100%;
 background:black;
 display:none;
 justify-content:center;
@@ -100,28 +81,22 @@ max-width:90%;
 max-height:80%;
 }
 
-/* PROGRESS */
 .progress{
 position:fixed;
-bottom:0;
-left:0;
+bottom:0;left:0;
 height:5px;
 background:#25D366;
 width:0%;
 }
 
-/* WHATSAPP */
 .whatsapp{
 position:fixed;
-bottom:20px;
-right:20px;
+bottom:20px;right:20px;
 background:#25D366;
 width:60px;height:60px;
 border-radius:50%;
-display:flex;
-justify-content:center;
-align-items:center;
-font-size:25px;
+display:flex;justify-content:center;
+align-items:center;font-size:25px;
 }
 </style>
 </head>
@@ -177,12 +152,14 @@ let data = JSON.parse(localStorage.getItem("data")) || {}
 let actualAlbum = null
 let actualImg = null
 
+// LOGIN
 function login(){
 if(pass.value==="Lepra1913"){
 pro.style.display="block"
 }
 }
 
+// CREAR ALBUM
 function crear(){
 let nombre = prompt("Nombre cliente")
 if(!nombre) return
@@ -191,6 +168,7 @@ guardar()
 renderAlbums()
 }
 
+// SUBIR
 function subir(){
 let files = document.getElementById("files").files
 let album = prompt("Álbum destino")
@@ -216,10 +194,12 @@ renderAlbums()
 })
 }
 
+// GUARDAR
 function guardar(){
 localStorage.setItem("data",JSON.stringify(data))
 }
 
+// RENDER ALBUMS
 function renderAlbums(){
 let g=document.getElementById("galerias")
 g.innerHTML=""
@@ -227,12 +207,28 @@ g.innerHTML=""
 for(let a in data){
 let div=document.createElement("div")
 div.className="album"
-div.innerHTML=`${a} (${data[a].length})`
+
+let link = location.origin + location.pathname + "?album=" + encodeURIComponent(a)
+
+div.innerHTML=`
+<strong>${a}</strong><br>
+${data[a].length} fotos<br>
+<button class="btn" onclick="copiarLink(event,'${link}')">📤 Compartir</button>
+`
+
 div.onclick=()=>abrirAlbum(a)
 g.appendChild(div)
 }
 }
 
+// COPIAR LINK
+function copiarLink(e,link){
+e.stopPropagation()
+navigator.clipboard.writeText(link)
+alert("Link copiado ✔")
+}
+
+// ABRIR ALBUM
 function abrirAlbum(a){
 actualAlbum=a
 galerias.style.display="none"
@@ -240,6 +236,7 @@ fotos.style.display="grid"
 renderFotos()
 }
 
+// RENDER FOTOS
 function renderFotos(){
 fotos.innerHTML=""
 data[actualAlbum].forEach(url=>{
@@ -250,6 +247,7 @@ fotos.appendChild(img)
 })
 }
 
+// VIEWER
 function ver(url){
 actualImg=url
 viewer.style.display="flex"
@@ -260,6 +258,7 @@ function cerrar(){
 viewer.style.display="none"
 }
 
+// DESCARGA
 function descargar(){
 window.open(actualImg)
 
@@ -270,19 +269,30 @@ localStorage.setItem("descargas",JSON.stringify(descargas))
 alert("Descarga registrada ✔")
 }
 
+// FAVORITOS
 function fav(){
 let favs = JSON.parse(localStorage.getItem("favs")) || []
 favs.push(actualImg)
 localStorage.setItem("favs",JSON.stringify(favs))
-alert("Agregado a favoritos ❤️")
+alert("Favorito ❤️")
 }
 
+// SCROLL
 function verGalerias(){
 document.getElementById("galerias").scrollIntoView()
 }
 
+// WHATSAPP
 function wa(){
 window.open("https://wa.me/5492615573928")
+}
+
+// AUTO ABRIR LINK
+const params = new URLSearchParams(window.location.search)
+const albumURL = params.get("album")
+
+if(albumURL && data[albumURL]){
+abrirAlbum(albumURL)
 }
 
 renderAlbums()
