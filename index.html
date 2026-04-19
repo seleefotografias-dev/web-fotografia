@@ -3,33 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <title>Fotografía</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #111;
+            color: white;
+        }
+
+        header {
+            text-align: center;
+            padding: 20px;
+            background: #000;
+        }
+
+        nav {
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #ff9900;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            padding: 20px;
+        }
+
+        .gallery img {
+            width: 100%;
+            border-radius: 10px;
+            transition: transform 0.3s;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.05);
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            background: #000;
+        }
+    </style>
 </head>
 
 <body>
 
+<header>
     <h1>Mi sitio de fotografía 📷</h1>
     <p>Bienvenido a mi web.</p>
+</header>
 
-    <nav>
-        <a href="#">Inicio</a>
-        <a href="#">Galería</a>
-        <a href="#">Contacto</a>
-    </nav>
+<nav>
+    <a href="#">Inicio</a>
+    <a href="#">Galería</a>
+    <a href="#">Contacto</a>
+</nav>
 
-    <section>
-        <h2>Capturando momentos únicos</h2>
-    </section>
+<section>
+    <h2>Capturando momentos únicos</h2>
+</section>
 
-    <section>
-        <img src="https://picsum.photos/400/300?1">
-        <img src="https://picsum.photos/400/300?2">
-        <img src="https://picsum.photos/400/300?3">
-        <img src="https://picsum.photos/400/300?4">
-    </section>
+<section class="gallery">
+    <img src="https://picsum.photos/400/300?1">
+    <img src="https://picsum.photos/400/300?2">
+    <img src="https://picsum.photos/400/300?3">
+    <img src="https://picsum.photos/400/300?4">
+</section>
 
-    <footer>
-        <p>© 2026 Mi Fotografía</p>
-    </footer>
+<footer>
+    <p>© 2026 Mi Fotografía</p>
+</footer>
 
 </body>
 </html>
