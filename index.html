@@ -1,149 +1,6 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ESCUDERO SELENE</title>
-
-<style>
-body {
-  margin:0;
-  font-family: Arial, sans-serif;
-  background:#000;
-  color:#fff;
-}
-
-header {
-  text-align:center;
-  padding:40px;
-  background:#000;
-}
-
-header h1 {
-  font-size:32px;
-}
-
-nav {
-  display:flex;
-  justify-content:center;
-  gap:20px;
-  margin-top:10px;
-}
-
-nav a {
-  color:white;
-  text-decoration:none;
-}
-
-.hero {
-  height:60vh;
-  background:url('https://picsum.photos/1200/600') center/cover;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-}
-
-.hero h2 {
-  font-size:28px;
-}
-
-.btn {
-  margin-top:15px;
-  padding:10px 20px;
-  background:white;
-  color:black;
-  text-decoration:none;
-}
-
-.gallery {
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-  gap:10px;
-  padding:20px;
-}
-
-.gallery img {
-  width:100%;
-  border-radius:10px;
-}
-
-.whatsapp {
-  position:fixed;
-  bottom:20px;
-  right:20px;
-  background:#25D366;
-  padding:15px;
-  border-radius:50%;
-  font-size:20px;
-}
-
-.admin {
-  display:none;
-  padding:20px;
-}
-
-input, button {
-  padding:10px;
-  margin:5px;
-}
-
-</style>
-</head>
-
-<body>
-
-<header>
-<h1>ESCUDERO SELENE 📷</h1>
-<p>@FOTOS_SELE</p>
-
-<nav>
-<a href="#">Inicio</a>
-<a href="#galeria">Galería</a>
-<a href="#contacto">Contacto</a>
-</nav>
-</header>
-
-<section class="hero">
-<h2>PROFESIONAL</h2>
-<a class="btn" href="#galeria">Ver Galería</a>
-<a class="btn" href="https://wa.me/5492615573928">WhatsApp</a>
-</section>
-
-<section id="galeria">
-<h2 style="text-align:center;">Galería</h2>
-<div class="gallery" id="gallery"></div>
-</section>
-
-<section id="contacto" style="text-align:center;">
-<h2>Contacto</h2>
-<p>WhatsApp: +54 9 2615573928</p>
-<p>Instagram: @FOTOS_SELE</p>
-<p>Email: seleefotografias@gmail.com</p>
-</section>
-
-<!-- BOTON WHATSAPP -->
-<a class="whatsapp" href="https://wa.me/5492615573928">💬</a>
-
-<!-- PANEL LOGIN -->
-<div style="text-align:center;">
-<h3>Panel fotógrafo</h3>
-<input type="password" id="pass" placeholder="Contraseña">
-<button onclick="login()">Entrar</button>
-</div>
-
-<div class="admin" id="admin">
-<h2>Panel PRO</h2>
-
-<input type="file" id="fileInput" multiple>
-<button onclick="upload()">Subir fotos</button>
-
-</div>
-
-<!-- FIREBASE -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getStorage, ref, uploadBytes, getDownloadURL, listAll } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBWm-PiD1rrslhKs01nHDvpbxuiWE22T2Q",
@@ -151,58 +8,35 @@ const firebaseConfig = {
   projectId: "fotografia-selene",
   storageBucket: "fotografia-selene.firebasestorage.app",
   messagingSenderId: "758063876891",
-  appId: "1:758063876891:web:eeb76e4527919c194b61be"
+  appId: "1:758063876891:web:eeb76e4527919c194b61be",
+  measurementId: "G-G5XMG5M1GF"
 };
 
 const app = initializeApp(firebaseConfig);
-const storage = getStorage(app);
+const auth = getAuth(app);
 
-// CARGAR IMÁGENES
-async function loadImages() {
-  const gallery = document.getElementById("gallery");
-  gallery.innerHTML = "";
-
-  const listRef = ref(storage);
-  const res = await listAll(listRef);
-
-  for (const item of res.items) {
-    const url = await getDownloadURL(item);
-    const img = document.createElement("img");
-    img.src = url;
-    gallery.appendChild(img);
-  }
-}
-
-loadImages();
-
-// SUBIR IMÁGENES
-window.upload = async function () {
-  const files = document.getElementById("fileInput").files;
-
-  for (let file of files) {
-    const storageRef = ref(storage, file.name);
-    await uploadBytes(storageRef, file);
-  }
-
-  alert("Fotos subidas");
-  loadImages();
-};
-
-</script>
-
-<script>
-// LOGIN SIMPLE
-function login(){
+// LOGIN PANEL
+window.login = async function() {
+  const email = document.getElementById("email").value;
   const pass = document.getElementById("pass").value;
 
-  if(pass === "1913"){
-    document.getElementById("admin").style.display="block";
-    alert("Bienvenida Selene 🔥");
-  } else {
-    alert("Contraseña incorrecta");
+  try {
+    await signInWithEmailAndPassword(auth, email, pass);
+    alert("Bienvenido panel PRO 🔥");
+    document.getElementById("panel").style.display = "block";
+  } catch (error) {
+    alert("Error: " + error.message);
   }
-}
+};
 </script>
+<section id="login">
+  <h2>Panel fotógrafo</h2>
+  <input type="email" id="email" placeholder="Email">
+  <input type="password" id="pass" placeholder="Contraseña">
+  <button onclick="login()">Ingresar</button>
+</section>
 
-</body>
-</html>
+<section id="panel" style="display:none;">
+  <h2>Panel PRO</h2>
+  <p>Desde acá vas a poder subir fotos, editar y más</p>
+</section>
