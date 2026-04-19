@@ -6,199 +6,219 @@
 <title>ESCUDERO SELENE</title>
 
 <style>
-body{
-  margin:0;
-  font-family: 'Segoe UI', sans-serif;
-  background:#000;
-  color:#fff;
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #000;
+  color: #fff;
 }
 
-header{
-  text-align:center;
-  padding:60px 20px;
-  background:url('https://picsum.photos/1200/500') center/cover;
+/* PANEL ARRIBA IZQUIERDA */
+.admin-btn {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  background: #111;
+  border: 1px solid #555;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 999;
 }
 
-header h1{
-  font-size:40px;
-  margin:0;
+/* HEADER */
+header {
+  text-align: center;
+  padding: 60px 20px;
 }
 
-header p{
-  opacity:0.8;
+header h1 {
+  font-size: 32px;
 }
 
-nav{
-  text-align:center;
-  padding:15px;
-  background:#111;
+header p {
+  color: #aaa;
 }
 
-nav a{
-  color:white;
-  margin:15px;
-  text-decoration:none;
-  font-weight:bold;
+/* CLIENTES */
+.clientes {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  padding: 20px;
 }
 
-.galeria{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-  gap:15px;
-  padding:20px;
+.cliente {
+  min-width: 200px;
+  background: #111;
+  padding: 15px;
+  cursor: pointer;
+  border-radius: 10px;
+  text-align: center;
 }
 
-.galeria img{
-  width:100%;
-  border-radius:12px;
-  transition:0.3s;
+.cliente:hover {
+  background: #222;
 }
 
-.galeria img:hover{
-  transform:scale(1.05);
+/* GALERÍA */
+.galeria {
+  display: none;
+  padding: 20px;
 }
 
-#login{
-  text-align:center;
-  padding:30px;
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+  gap: 15px;
 }
 
-input{
-  padding:10px;
-  margin:5px;
-  border-radius:5px;
-  border:none;
+.img-box {
+  position: relative;
 }
 
-button{
-  padding:10px 20px;
-  background:#25D366;
-  border:none;
-  border-radius:5px;
-  color:white;
-  cursor:pointer;
+.img-box img {
+  width: 100%;
+  border-radius: 10px;
 }
 
-#panel{
-  display:none;
-  background:#111;
-  padding:20px;
-  text-align:center;
+/* MARCA DE AGUA */
+.img-box::after {
+  content: "@FOTOS_SELE";
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  color: rgba(255,255,255,0.6);
+  font-size: 14px;
 }
 
-footer{
-  text-align:center;
-  padding:20px;
-  background:#111;
+/* BOTÓN DESCARGA */
+.descargar {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #000;
+  padding: 5px 10px;
+  font-size: 12px;
+  cursor: pointer;
 }
 
-.whatsapp{
-  position:fixed;
-  bottom:20px;
-  right:20px;
-  background:#25D366;
-  padding:15px;
-  border-radius:50%;
-  font-size:22px;
-  text-decoration:none;
-  color:white;
+/* PANEL LOGIN */
+.panel {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.95);
+  padding: 50px;
+}
+
+input {
+  padding: 10px;
+  margin: 5px;
+}
+
+button {
+  padding: 10px;
+  cursor: pointer;
+}
+
+/* WHATSAPP */
+.whatsapp {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #25D366;
+  color: white;
+  padding: 15px;
+  border-radius: 50%;
+  font-size: 20px;
 }
 </style>
 </head>
 
 <body>
 
+<div class="admin-btn" onclick="abrirPanel()">⚙</div>
+
 <header>
-<h1>ESCUDERO SELENE 📸</h1>
-<p>@FOTOS_SELE — PROFESIONAL</p>
+<h1>ESCUDERO SELENE</h1>
+<p>@FOTOS_SELE · PROFESIONAL</p>
 </header>
 
-<nav>
-<a href="#">Inicio</a>
-<a href="#">Galería</a>
-<a href="#">Contacto</a>
-</nav>
+<!-- CLIENTES -->
+<div class="clientes">
+  <div class="cliente" onclick="abrirGaleria('sofia')">15 Sofía</div>
+  <div class="cliente" onclick="abrirGaleria('boda')">Boda Juan & Ana</div>
+</div>
 
-<section id="login">
-<h2>Panel fotógrafo</h2>
-<input type="email" id="email" placeholder="Email">
-<input type="password" id="pass" placeholder="Contraseña">
-<button onclick="login()">Ingresar</button>
-</section>
+<!-- GALERÍA -->
+<div id="sofia" class="galeria">
+  <h2>15 Sofía</h2>
+  <div class="grid">
+    <div class="img-box">
+      <a href="https://picsum.photos/1000" download>
+        <div class="descargar">⬇</div>
+      </a>
+      <img src="https://picsum.photos/400?1">
+    </div>
 
-<section id="panel">
-<h2>Panel PRO 🔥</h2>
+    <div class="img-box">
+      <a href="https://picsum.photos/1000" download>
+        <div class="descargar">⬇</div>
+      </a>
+      <img src="https://picsum.photos/400?2">
+    </div>
+  </div>
+</div>
 
-<input type="file" id="file">
-<button onclick="subirFoto()">Subir foto</button>
+<div id="boda" class="galeria">
+  <h2>Boda</h2>
+  <div class="grid">
+    <div class="img-box">
+      <img src="https://picsum.photos/400?3">
+    </div>
+  </div>
+</div>
 
-</section>
+<!-- PANEL -->
+<div id="panel" class="panel">
+  <h2>Panel Fotógrafo PRO</h2>
 
-<section class="galeria" id="galeria"></section>
+  <input type="text" id="user" placeholder="Email">
+  <input type="password" id="pass" placeholder="Contraseña">
+  <button onclick="login()">Ingresar</button>
 
-<footer>
-© 2026 ESCUDERO SELENE
-</footer>
+  <div id="panelContenido" style="display:none;">
+    <h3>Subir fotos (simulado)</h3>
+    <input type="file" multiple>
+    <p>Acá después conectamos Firebase 🔥</p>
+  </div>
+</div>
 
+<!-- WHATSAPP -->
 <a class="whatsapp" href="https://wa.me/5492615573928">💬</a>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getStorage, ref, uploadBytes, getDownloadURL, listAll } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+<script>
+function abrirGaleria(id){
+  document.querySelectorAll('.galeria').forEach(g=>g.style.display='none');
+  document.getElementById(id).style.display='block';
+}
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBWm-PiD1rrslhKs01nHDvpbxuiWE22T2Q",
-  authDomain: "fotografia-selene.firebaseapp.com",
-  projectId: "fotografia-selene",
-  storageBucket: "fotografia-selene.firebasestorage.app",
-  messagingSenderId: "758063876891",
-  appId: "1:758063876891:web:eeb76e4527919c194b61be"
-};
+function abrirPanel(){
+  document.getElementById("panel").style.display="block";
+}
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const storage = getStorage(app);
+function login(){
+  let pass = document.getElementById("pass").value;
 
-window.login = async function(){
-  const email = document.getElementById("email").value;
-  const pass = document.getElementById("pass").value;
-
-  try{
-    await signInWithEmailAndPassword(auth, email, pass);
-    alert("Bienvenida Selene 🔥");
-    document.getElementById("panel").style.display = "block";
-    cargarFotos();
-  }catch(e){
-    alert("Error: "+e.message);
+  if(pass === "1913"){
+    document.getElementById("panelContenido").style.display = "block";
+  } else {
+    alert("Contraseña incorrecta");
   }
 }
-
-window.subirFoto = async function(){
-  const file = document.getElementById("file").files[0];
-  const storageRef = ref(storage, "fotos/" + file.name);
-
-  await uploadBytes(storageRef, file);
-  alert("Foto subida 🔥");
-  cargarFotos();
-}
-
-async function cargarFotos(){
-  const galeria = document.getElementById("galeria");
-  galeria.innerHTML = "";
-
-  const listRef = ref(storage, "fotos/");
-  const res = await listAll(listRef);
-
-  for(const item of res.items){
-    const url = await getDownloadURL(item);
-    const img = document.createElement("img");
-    img.src = url;
-    galeria.appendChild(img);
-  }
-}
-
-cargarFotos();
 </script>
 
 </body>
